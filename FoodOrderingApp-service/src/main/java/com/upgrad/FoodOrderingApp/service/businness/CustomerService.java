@@ -56,4 +56,16 @@ public class CustomerService {
 
     }
 
+    public CustomerEntity getCustomerWithPhoneNumberAndPassword(final String contactNumber, final String password)
+            throws AuthenticationFailedException {
+        CustomerEntity customerEntity = getCustomerWithPhoneNumber(contactNumber);
+
+        if (customerEntity.getPassword().equals(password) ) {
+            return customerEntity;
+        } else {
+            throw new AuthenticationFailedException("ATH-002", "Invalid Credentials");
+        }
+
+    }
+
 }

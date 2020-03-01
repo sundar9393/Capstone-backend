@@ -16,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
+
 @RestController
 @RequestMapping()
 public class CustomerController {
@@ -43,6 +45,13 @@ public class CustomerController {
 
         // Check the format of the Authorization Header
         customerService.verifyAuthorizationHeaderFormat(authorizationHeader);
+        //Decoding the Basic Authorization Header
+        byte[] decode = Base64.getDecoder().decode(authorizationHeader.split("Basic ")[1]);
+        String decodedText = new String(decode);
+        //Splitting the Contact Number and Password
+        String[] decodedArray = decodedText.split(":");
+        //Retrieving the Customer Record using the phone number and password
+        customerEntity = customerService.getCustomerWithPhoneNumberAndPassword(decodedArray[0], decodedArray[1]);
     }
 
 }
