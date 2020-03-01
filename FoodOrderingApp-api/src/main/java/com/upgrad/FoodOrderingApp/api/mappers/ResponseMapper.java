@@ -1,5 +1,6 @@
 package com.upgrad.FoodOrderingApp.api.mappers;
 
+import com.upgrad.FoodOrderingApp.api.model.LoginResponse;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerResponse;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 
@@ -10,4 +11,15 @@ public class ResponseMapper {
                                                         .status("CUSTOMER SUCCESSFULLY REGISTERED");
         return signupCustomerResponse;
     }
+
+    public static LoginResponse toLoginResponse(CustomerEntity customerEntity) {
+        return new LoginResponse()
+                .id(customerEntity.getUuid())
+                .firstName(customerEntity.getFirstName())
+                .lastName(customerEntity.getLastName())
+                .contactNumber(customerEntity.getContactNumber())
+                .emailAddress(customerEntity.getEmail())
+                .message("LOGGED IN SUCCESSFULLY");
+    }
+
 }

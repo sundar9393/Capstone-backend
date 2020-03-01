@@ -11,11 +11,13 @@ import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
 import java.util.Base64;
 
 @RestController
@@ -52,6 +54,14 @@ public class CustomerController {
         String[] decodedArray = decodedText.split(":");
         //Retrieving the Customer Record using the phone number and password
         customerEntity = customerService.getCustomerWithPhoneNumberAndPassword(decodedArray[0], decodedArray[1]);
+        // After successful authentication, generating the Login In Response
+        LoginResponse loginResponse = ResponseMapper.toLoginResponse(customerEntity);
+        // Generating the Access-Token Header
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("access-token", jwtTokenProvider.generateToken(customerEntity.getUuid(),
+                ZonedDateTime.now(), ZonedDateTime.now().plusHours(2)));
+        // Returning the Login Response
+        return new ResponseEntity<LoginResponse>(loginResponse, responseHeaders, HttpStatus.OK);
     }
 
 }
