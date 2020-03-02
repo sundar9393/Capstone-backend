@@ -4,12 +4,14 @@ import com.upgrad.FoodOrderingApp.api.Util.Utility;
 import com.upgrad.FoodOrderingApp.api.mappers.RequestMapper;
 import com.upgrad.FoodOrderingApp.api.mappers.ResponseMapper;
 import com.upgrad.FoodOrderingApp.api.model.LoginResponse;
+import com.upgrad.FoodOrderingApp.api.model.LogoutResponse;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerRequest;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerResponse;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
+import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +57,19 @@ public class CustomerController {
         responseHeaders.add("access-token", customerAuthToken.getAccess_token());
         // Returning the Login Response
         return new ResponseEntity<LoginResponse>(loginResponse, responseHeaders, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/customer/logout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<LogoutResponse> logout(@RequestHeader(name = "access-token") final String accessToken) throws
+            AuthorizationFailedException {
+
+        //Get the Auth token from the DB using the accessToken after doing necessary validations
+        final CustomerAuthTokenEntity customerAuthToken = customerService.logout(accessToken);
+        //Generate Logout response after successful authorization and logging out
+        LogoutResponse logoutResponse = ResponseMapper.toLogoutResponse(customerAuthToken);
+        //return
+        return new ResponseEntity<LogoutResponse>(logoutResponse,HttpStatus.OK);
+
     }
 
 }

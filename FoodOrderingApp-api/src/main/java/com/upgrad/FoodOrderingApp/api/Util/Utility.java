@@ -14,7 +14,7 @@ public class Utility {
         }
         byte[] decode = Base64.getDecoder().decode(authHeader.split("Basic ")[1]);
         String decodedText = new String(decode);
-        if(!authHeader.contains(":")){
+        if(!decodedText.contains(":")){
             throw new AuthenticationFailedException("ATH-003", "Incorrect format of decoded customer name and password");
         }
         //If the format is correct return the decoded String array by splitting it based on colon(:)
