@@ -2,6 +2,7 @@ package com.upgrad.FoodOrderingApp.service.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -43,6 +44,10 @@ public class CustomerEntity {
     @Column(name = "salt")
     @NotNull
     private String salt;
+
+    //Setting mapping between Customer and Customer auth token
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    private List<CustomerAuthTokenEntity> authTokens;
 
     public CustomerEntity() {
 
@@ -110,5 +115,13 @@ public class CustomerEntity {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public List<CustomerAuthTokenEntity> getAuthTokens() {
+        return authTokens;
+    }
+
+    public void setAuthTokens(List<CustomerAuthTokenEntity> authTokens) {
+        this.authTokens = authTokens;
     }
 }

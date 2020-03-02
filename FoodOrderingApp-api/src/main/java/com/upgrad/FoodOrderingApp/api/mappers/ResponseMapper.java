@@ -2,6 +2,7 @@ package com.upgrad.FoodOrderingApp.api.mappers;
 
 import com.upgrad.FoodOrderingApp.api.model.LoginResponse;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerResponse;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 
 public class ResponseMapper {
@@ -12,7 +13,8 @@ public class ResponseMapper {
         return signupCustomerResponse;
     }
 
-    public static LoginResponse toLoginResponse(CustomerEntity customerEntity) {
+    public static LoginResponse toLoginResponse(CustomerAuthTokenEntity authTokenEntity) {
+        CustomerEntity customerEntity = authTokenEntity.getCustomer();
         return new LoginResponse()
                 .id(customerEntity.getUuid())
                 .firstName(customerEntity.getFirstName())
