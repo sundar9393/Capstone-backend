@@ -1,12 +1,13 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
+import com.upgrad.FoodOrderingApp.api.Util.Utility;
 import com.upgrad.FoodOrderingApp.api.mappers.RequestMapper;
 import com.upgrad.FoodOrderingApp.api.mappers.ResponseMapper;
 import com.upgrad.FoodOrderingApp.api.model.LoginResponse;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerRequest;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerResponse;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
-import com.upgrad.FoodOrderingApp.service.businness.JwtTokenProvider;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
@@ -27,8 +28,6 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
 
     @RequestMapping(method = RequestMethod.POST, path = "/customer/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
     produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -45,21 +44,15 @@ public class CustomerController {
             throws AuthenticationFailedException {
         CustomerEntity customerEntity;
 
-        // Check the format of the Authorization Header
-        customerService.verifyAuthorizationHeaderFormat(authorizationHeader);
-        //Decoding the Basic Authorization Header
-        byte[] decode = Base64.getDecoder().decode(authorizationHeader.split("Basic ")[1]);
-        String decodedText = new String(decode);
-        //Splitting the Contact Number and Password
-        String[] decodedArray = decodedText.split(":");
-        //Retrieving the Customer Record using the phone number and password
-        customerEntity = customerService.getCustomerWithPhoneNumberAndPassword(decodedArray[0], decodedArray[1]);
+        // validating and decoding the Authorization Header to get phonenumber and password entered
+        String[] decodedArray = Utility.decodeAuthHeather(authorizationHeader);
+        //Creating a Customer Auth token after successful login
+        final CustomerAuthTokenEntity customerAuthToken = customerService.login(decodedArray[0], decodedArray[1]);
         // After successful authentication, generating the Login In Response
-        LoginResponse loginResponse = ResponseMapper.toLoginResponse(customerEntity);
-        // Generating the Access-Token Header
+        LoginResponse loginResponse = ResponseMapper.toLoginResponse(customerAuthToken);
+        // Adding Access-Token to Header
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("access-token", jwtTokenProvider.generateToken(customerEntity.getUuid(),
-                ZonedDateTime.now(), ZonedDateTime.now().plusHours(2)));
+        responseHeaders.add("access-token", customerAuthToken.getAccess_token());
         // Returning the Login Response
         return new ResponseEntity<LoginResponse>(loginResponse, responseHeaders, HttpStatus.OK);
     }
