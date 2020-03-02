@@ -64,4 +64,28 @@ public class CustomerController {
         return new ResponseEntity<LoginResponse>(loginResponse, responseHeaders, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/customer/logout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<LoginResponse> logout(@RequestHeader(name = "authorization") final String authorizationHeader)
+            throws AuthenticationFailedException {
+        CustomerEntity customerEntity;
+
+        // Check the format of the Authorization Header
+        customerService.verifyAuthorizationHeaderFormat(authorizationHeader);
+        //Decoding the Basic Authorization Header
+        byte[] decode = Base64.getDecoder().decode(authorizationHeader.split("Basic ")[1]);
+        String decodedText = new String(decode);
+        //Splitting the Contact Number and Password
+        String[] decodedArray = decodedText.split(":");
+        //Retrieving the Customer Record using the phone number and password
+        customerEntity = customerService.getCustomerWithPhoneNumberAndPassword(decodedArray[0], decodedArray[1]);
+        // After successful authentication, generating the Login In Response
+        LoginResponse loginResponse = ResponseMapper.toLoginResponse(customerEntity);
+        // Generating the Access-Token Header
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("access-token", jwtTokenProvider.generateToken(customerEntity.getUuid(),
+                ZonedDateTime.now(), ZonedDateTime.now().plusHours(2)));
+        // Returning the Login Response
+        return new ResponseEntity<LoginResponse>(loginResponse, responseHeaders, HttpStatus.OK);
+    }
+
 }
