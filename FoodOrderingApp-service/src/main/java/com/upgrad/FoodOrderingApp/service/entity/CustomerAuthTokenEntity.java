@@ -8,12 +8,17 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "customer_auth")
+@NamedQueries(
+        {
+                @NamedQuery(name = "getAuthTokenWithAccessToken", query = "SELECT a from CustomerAuthTokenEntity a where a.access_token = :accessToken")
+        }
+)
 public class CustomerAuthTokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Integer id;
 
     @Column(name = "uuid")
     @Size(max = 200)
@@ -43,11 +48,11 @@ public class CustomerAuthTokenEntity {
     public CustomerAuthTokenEntity() {
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
