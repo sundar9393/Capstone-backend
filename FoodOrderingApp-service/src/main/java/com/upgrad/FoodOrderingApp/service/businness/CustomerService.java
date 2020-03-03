@@ -6,6 +6,7 @@ import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
+import com.upgrad.FoodOrderingApp.service.exception.UpdateCustomerException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,6 +111,31 @@ public class CustomerService {
             throw new AuthorizationFailedException("ATHR-005", "Access token cannot be empty");
         }
 
+
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity changePassword(String accessToken, String oldpass, String newpass) throws AuthorizationFailedException, UpdateCustomerException {
+        if(StringUtils.isNotEmpty(accessToken)) {
+            CustomerAuthTokenEntity authToken = customerDao.getAuthTokenWithAccessToken(accessToken);
+            validateAuthToken(authToken);
+            CustomerEntity customer = authToken.getCustomer();
+            String encryptedOldpass = passwordEncryptor.encrypt(oldpass,customer.getSalt());
+            //Comparing entered old password with password in db after encrypting
+            if(!(encryptedOldpass.equals(customer.getPassword()))) {
+                throw new UpdateCustomerException("UCR-004","Incorrect old password!");
+            }
+            String encryptedNewpass = passwordEncryptor.encrypt(newpass,customer.getSalt());
+            if(encryptedNewpass.equals(customer.getPassword())) {
+                throw new UpdateCustomerException("UCR-007","Enter a different new password,It cannot be same as old password");
+            }
+            customer.setPassword(encryptedNewpass);
+            return customerDao.updateCustomer(customer);
+
+
+        } else {
+            throw new AuthorizationFailedException("ATHR-005", "Access token cannot be empty");
+        }
 
     }
 

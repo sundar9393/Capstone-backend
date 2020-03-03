@@ -3,16 +3,15 @@ package com.upgrad.FoodOrderingApp.api.controller;
 import com.upgrad.FoodOrderingApp.api.Util.Utility;
 import com.upgrad.FoodOrderingApp.api.mappers.RequestMapper;
 import com.upgrad.FoodOrderingApp.api.mappers.ResponseMapper;
-import com.upgrad.FoodOrderingApp.api.model.LoginResponse;
-import com.upgrad.FoodOrderingApp.api.model.LogoutResponse;
-import com.upgrad.FoodOrderingApp.api.model.SignupCustomerRequest;
-import com.upgrad.FoodOrderingApp.api.model.SignupCustomerResponse;
+import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
+import com.upgrad.FoodOrderingApp.service.exception.UpdateCustomerException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -70,6 +69,26 @@ public class CustomerController {
         //return
         return new ResponseEntity<LogoutResponse>(logoutResponse,HttpStatus.OK);
 
+    }
+
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/customer/password", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<UpdatePasswordResponse> changePassword(@RequestHeader(name = "access-token") final String accessToken,
+                                                                 @RequestBody(required = true) UpdatePasswordRequest updatePasswordRequest)
+            throws UpdateCustomerException, AuthorizationFailedException, SignUpRestrictedException {
+       //validate update password request
+       if(StringUtils.isNotEmpty(updatePasswordRequest.getOldPassword()) && StringUtils.isNotEmpty(updatePasswordRequest.getNewPassword())) {
+            String token = Utility.getAccessTokenFromHeader(accessToken);
+            if(!(Utility.isPasswordStrong(updatePasswordRequest.getNewPassword()))) {
+                throw new UpdateCustomerException("UCR-001","Weak password!");
+            }
+            CustomerEntity customerEntity = customerService.changePassword(token,updatePasswordRequest.getOldPassword(),updatePasswordRequest.getNewPassword());
+            UpdatePasswordResponse updatePasswordResponse = ResponseMapper.toUpdatePassResponse(customerEntity);
+            return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse,HttpStatus.OK);
+
+       } else {
+           throw new UpdateCustomerException("UCR-003","No field should be empty");
+       }
     }
 
 }
