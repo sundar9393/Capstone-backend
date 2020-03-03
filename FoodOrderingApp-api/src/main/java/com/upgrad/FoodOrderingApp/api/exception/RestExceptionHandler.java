@@ -26,14 +26,14 @@ public class RestExceptionHandler {
     @ExceptionHandler(AuthenticationFailedException.class)
     public ResponseEntity<ErrorResponse> authenticationFailedExceptionHandler(AuthenticationFailedException afe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(afe.getCode()).message(afe.getErrorMessage())
-                .rootCause(afe.getMessage()),HttpStatus.BAD_REQUEST);
+                .rootCause(afe.getMessage()),HttpStatus.UNAUTHORIZED);
     }
 
 
     @ExceptionHandler(AuthorizationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedExceptionHandler(AuthorizationFailedException athr, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(athr.getCode()).message(athr.getErrorMessage())
-                ,HttpStatus.BAD_REQUEST);
+                ,HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(UpdateCustomerException.class)
