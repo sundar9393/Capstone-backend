@@ -1,14 +1,12 @@
 package com.upgrad.FoodOrderingApp.api.mappers;
 
+import com.upgrad.FoodOrderingApp.api.Util.Utility;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerRequest;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import org.apache.commons.lang3.StringUtils;
 
 public class RequestMapper {
-
-    private static final String PASSWORD_PATTERN =
-            "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20})";
 
 
     public static CustomerEntity toCustomerEntity(SignupCustomerRequest signupCustomerRequest) throws SignUpRestrictedException {
@@ -25,7 +23,7 @@ public class RequestMapper {
                 throw new SignUpRestrictedException("SGR-002","Invalid email-id format!");
             }
 
-            if(!(signupCustomerRequest.getPassword().matches(PASSWORD_PATTERN))) {
+            if(!(Utility.isPasswordStrong(signupCustomerRequest.getPassword()))) {
                 throw new SignUpRestrictedException("SGR-004","Weak password!");
             }
 

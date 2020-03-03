@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.api.mappers;
 import com.upgrad.FoodOrderingApp.api.model.LoginResponse;
 import com.upgrad.FoodOrderingApp.api.model.LogoutResponse;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerResponse;
+import com.upgrad.FoodOrderingApp.api.model.UpdatePasswordResponse;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 
@@ -30,6 +31,10 @@ public class ResponseMapper {
         return new LogoutResponse()
                 .id(customerEntity.getUuid())
                 .message("LOGGED OUT SUCCESSFULLY");
+    }
+
+    public static UpdatePasswordResponse toUpdatePassResponse(CustomerEntity customerEntity) {
+        return new UpdatePasswordResponse().id(customerEntity.getUuid()).status("CUSTOMER PASSWORD UPDATED SUCCESSFULLY");
     }
 
 }

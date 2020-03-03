@@ -45,4 +45,8 @@ public class CustomerDao {
     public CustomerAuthTokenEntity logout(CustomerAuthTokenEntity customerAuthTokenEntity) {
         return entityManager.merge(customerAuthTokenEntity);
     }
+
+    public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
+        return entityManager.merge(customerEntity);
+    }
 }
