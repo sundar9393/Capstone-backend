@@ -115,6 +115,23 @@ public class CustomerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity updateCustomerDetails(String accessToken, String firstname, String lastname) throws AuthorizationFailedException {
+        if(StringUtils.isNotEmpty(accessToken)) {
+            CustomerAuthTokenEntity authToken = customerDao.getAuthTokenWithAccessToken(accessToken);
+            validateAuthToken(authToken);
+            CustomerEntity customer = authToken.getCustomer();
+            //Update firstname and lastname
+            customer.setFirstName(firstname);
+            if(StringUtils.isNotEmpty(lastname)){
+                customer.setLastName(lastname);
+            }
+            return customerDao.updateCustomer(customer);
+        } else {
+            throw new AuthorizationFailedException("ATHR-005", "Access token cannot be empty");
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity changePassword(String accessToken, String oldpass, String newpass) throws AuthorizationFailedException, UpdateCustomerException {
         if(StringUtils.isNotEmpty(accessToken)) {
             CustomerAuthTokenEntity authToken = customerDao.getAuthTokenWithAccessToken(accessToken);

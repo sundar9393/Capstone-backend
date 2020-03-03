@@ -23,14 +23,14 @@ import java.time.ZonedDateTime;
 import java.util.Base64;
 
 @RestController
-@RequestMapping()
+@RequestMapping(path = "/customer")
 public class CustomerController {
 
     @Autowired
     CustomerService customerService;
 
 
-    @RequestMapping(method = RequestMethod.POST, path = "/customer/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    @RequestMapping(method = RequestMethod.POST, path = "/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
     produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 
     public ResponseEntity<SignupCustomerResponse> signup(@RequestBody(required = false) final SignupCustomerRequest signupCustomerRequest)
@@ -40,7 +40,7 @@ public class CustomerController {
         return new ResponseEntity<SignupCustomerResponse>(signupCustomerResponse, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/customer/login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.POST, path = "/login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<LoginResponse> login(@RequestHeader(name = "authorization") final String authorizationHeader)
             throws AuthenticationFailedException {
         CustomerEntity customerEntity;
@@ -58,7 +58,7 @@ public class CustomerController {
         return new ResponseEntity<LoginResponse>(loginResponse, responseHeaders, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/customer/logout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.POST, path = "/logout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<LogoutResponse> logout(@RequestHeader(name = "access-token") final String accessToken) throws
             AuthorizationFailedException {
 
@@ -71,8 +71,24 @@ public class CustomerController {
 
     }
 
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<UpdateCustomerResponse> updateCustomerDetails(@RequestHeader(name = "access-token") final String accessToken,
+                                                                        @RequestBody(required = true) UpdateCustomerRequest updateCustomerRequest)
+            throws UpdateCustomerException, AuthorizationFailedException {
+        if(StringUtils.isNotEmpty(updateCustomerRequest.getFirstName())) {
+            String token = Utility.getAccessTokenFromHeader(accessToken);
+            CustomerEntity customerEntity = customerService.updateCustomerDetails(token, updateCustomerRequest.getFirstName(), updateCustomerRequest.getLastName());
+            UpdateCustomerResponse updateCustomerResponse = ResponseMapper.toUpdateCustomerResponse(customerEntity);
+            return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse,HttpStatus.OK);
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/customer/password", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        } else {
+            throw new UpdateCustomerException("UCR-002", "First name field should not be empty");
+        }
+    }
+
+
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/password", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UpdatePasswordResponse> changePassword(@RequestHeader(name = "access-token") final String accessToken,
                                                                  @RequestBody(required = true) UpdatePasswordRequest updatePasswordRequest)
             throws UpdateCustomerException, AuthorizationFailedException, SignUpRestrictedException {
