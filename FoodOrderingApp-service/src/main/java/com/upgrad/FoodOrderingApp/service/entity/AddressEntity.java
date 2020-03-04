@@ -5,6 +5,11 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "address")
+@NamedQueries(
+        {
+                @NamedQuery(name = "getAllAddressOrdered", query = "SELECT a from AddressEntity a order by a.id desc ")
+        }
+)
 public class AddressEntity {
 
     @Id

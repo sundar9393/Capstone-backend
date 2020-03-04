@@ -11,12 +11,15 @@ import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SaveAddressException;
+import com.upgrad.FoodOrderingApp.service.util.ServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/address")
@@ -54,5 +57,14 @@ public class AddressController {
         }
 
 
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/customer", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<AddressEntity>> getAllAddresses(@RequestHeader(name = "access-token") final String accessToken) throws AuthorizationFailedException {
+
+        String token = Utility.getAccessTokenFromHeader(accessToken);
+        List<AddressEntity> addresses = addressService.getAllAddresses(token);
+
+        return new ResponseEntity<List<AddressEntity>>(addresses,HttpStatus.OK);
     }
 }

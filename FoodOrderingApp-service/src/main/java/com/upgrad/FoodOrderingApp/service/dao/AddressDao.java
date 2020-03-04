@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class AddressDao {
@@ -29,6 +30,10 @@ public class AddressDao {
     public AddressEntity saveAddress(AddressEntity addressEntity) {
         entityManager.persist(addressEntity);
         return addressEntity;
+    }
+
+    public List<AddressEntity> getAllAddresses() {
+        return entityManager.createNamedQuery("getAllAddressOrdered", AddressEntity.class).getResultList();
     }
 
 }

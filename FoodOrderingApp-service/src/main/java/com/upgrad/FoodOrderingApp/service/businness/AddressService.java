@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,6 +37,14 @@ public class AddressService {
 
          addressEntity.setUuid(UUID.randomUUID().toString());
          return addressDao.saveAddress(addressEntity);
+     }
+
+     public List<AddressEntity> getAllAddresses(String accessToken) throws AuthorizationFailedException {
+
+         CustomerAuthTokenEntity authTokenEntity = customerDao.getAuthTokenWithAccessToken(accessToken);
+         ServiceUtil.validateAuthToken(authTokenEntity);
+
+         return addressDao.getAllAddresses();
      }
 
 }
