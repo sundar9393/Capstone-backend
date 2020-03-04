@@ -51,4 +51,8 @@ public class AddressService {
          return addressDao.getAllAddresses();
      }
 
+     public List<StateEntity> getAllStates() {
+         return addressDao.getAllStates();
+     }
+
 }

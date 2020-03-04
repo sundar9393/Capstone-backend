@@ -36,4 +36,8 @@ public class AddressDao {
         return entityManager.createNamedQuery("getAllAddressOrdered", AddressEntity.class).getResultList();
     }
 
+    public List<StateEntity> getAllStates() {
+        return entityManager.createNamedQuery("getAllStates", StateEntity.class).getResultList();
+    }
+
 }

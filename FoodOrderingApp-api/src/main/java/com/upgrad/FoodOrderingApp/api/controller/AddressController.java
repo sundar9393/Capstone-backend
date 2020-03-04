@@ -22,13 +22,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/address")
 public class AddressController {
 
     @Autowired
     AddressService addressService;
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.POST, path = "/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SaveAddressResponse> saveAddress(@RequestBody(required = true) SaveAddressRequest saveAddressRequest,
                                                            @RequestHeader(name = "access-token") final String accessToken)
                                                            throws SaveAddressException, AddressNotFoundException, AuthorizationFailedException {
@@ -59,12 +58,18 @@ public class AddressController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/customer", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.GET, path = "/address/customer", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<AddressEntity>> getAllAddresses(@RequestHeader(name = "access-token") final String accessToken) throws AuthorizationFailedException {
 
         String token = Utility.getAccessTokenFromHeader(accessToken);
         List<AddressEntity> addresses = addressService.getAllAddresses(token);
 
         return new ResponseEntity<List<AddressEntity>>(addresses,HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/states", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<StateEntity>> getAllStates() {
+        List<StateEntity> states = addressService.getAllStates();
+        return new ResponseEntity<List<StateEntity>>(states,HttpStatus.OK);
     }
 }
