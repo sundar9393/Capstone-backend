@@ -2,6 +2,8 @@ package com.upgrad.FoodOrderingApp.service.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "address")
@@ -44,6 +46,16 @@ public class AddressEntity {
 
     @Column(name = "active")
     private Integer status;
+
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "customer_address",
+            joinColumns = {@JoinColumn(name = "address_id")},
+            inverseJoinColumns = {@JoinColumn(name = "customer_id")}
+    )
+    private List<CustomerEntity> customers = new ArrayList<>();
 
     public AddressEntity() {
 
@@ -111,5 +123,13 @@ public class AddressEntity {
 
     public void setState(StateEntity state) {
         this.state = state;
+    }
+
+    public List<CustomerEntity> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(CustomerEntity customer) {
+        this.customers.add(customer);
     }
 }
