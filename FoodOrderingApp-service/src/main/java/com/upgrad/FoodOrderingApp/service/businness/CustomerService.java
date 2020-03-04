@@ -7,6 +7,7 @@ import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedExceptio
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import com.upgrad.FoodOrderingApp.service.exception.UpdateCustomerException;
+import com.upgrad.FoodOrderingApp.service.util.ServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,7 +105,7 @@ public class CustomerService {
     public CustomerAuthTokenEntity logout(String accessToken) throws AuthorizationFailedException {
         if(StringUtils.isNotEmpty(accessToken)) {
             CustomerAuthTokenEntity authToken = customerDao.getAuthTokenWithAccessToken(accessToken);
-            validateAuthToken(authToken);
+            ServiceUtil.validateAuthToken(authToken);
             authToken.setLogout_at(ZonedDateTime.now());
             return customerDao.logout(authToken);
         } else {
@@ -118,7 +119,7 @@ public class CustomerService {
     public CustomerEntity updateCustomerDetails(String accessToken, String firstname, String lastname) throws AuthorizationFailedException {
         if(StringUtils.isNotEmpty(accessToken)) {
             CustomerAuthTokenEntity authToken = customerDao.getAuthTokenWithAccessToken(accessToken);
-            validateAuthToken(authToken);
+            ServiceUtil.validateAuthToken(authToken);
             CustomerEntity customer = authToken.getCustomer();
             //Update firstname and lastname
             customer.setFirstName(firstname);
@@ -135,7 +136,7 @@ public class CustomerService {
     public CustomerEntity changePassword(String accessToken, String oldpass, String newpass) throws AuthorizationFailedException, UpdateCustomerException {
         if(StringUtils.isNotEmpty(accessToken)) {
             CustomerAuthTokenEntity authToken = customerDao.getAuthTokenWithAccessToken(accessToken);
-            validateAuthToken(authToken);
+            ServiceUtil.validateAuthToken(authToken);
             CustomerEntity customer = authToken.getCustomer();
             String encryptedOldpass = passwordEncryptor.encrypt(oldpass,customer.getSalt());
             //Comparing entered old password with password in db after encrypting
@@ -156,20 +157,5 @@ public class CustomerService {
 
     }
 
-    /*
-    Method to validate auth token
-     */
-    private void validateAuthToken(CustomerAuthTokenEntity authTokenEntity) throws AuthorizationFailedException {
-        if(authTokenEntity!=null) {
-            if (authTokenEntity.getLogout_at()!= null) {
-                throw new AuthorizationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
-            }
-            if (ZonedDateTime.now().isAfter(authTokenEntity.getExpires_at())) {
-                throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
-            }
-        } else {
-            throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
-        }
-    }
 
 }
