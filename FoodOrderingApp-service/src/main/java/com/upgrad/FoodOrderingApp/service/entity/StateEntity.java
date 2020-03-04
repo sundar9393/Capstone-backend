@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "state")
+@NamedQuery(name = "getStateWithUuid", query = "SELECT s from StateEntity s where s.uuid = :uuid")
 public class StateEntity {
 
     @Id

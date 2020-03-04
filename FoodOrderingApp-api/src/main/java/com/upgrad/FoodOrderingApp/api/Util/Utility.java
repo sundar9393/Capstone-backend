@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.api.Util;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Base64;
 
@@ -28,6 +29,9 @@ public class Utility {
     }
 
     public static String getAccessTokenFromHeader(String accessTokenHeader) throws AuthorizationFailedException {
+        if(StringUtils.isEmpty(accessTokenHeader)) {
+           throw new AuthorizationFailedException("ATHR-008", "Auth header missing!!");
+        }
         if(!(accessTokenHeader.substring(0,6).equals("Bearer"))) {
             throw new AuthorizationFailedException("ATHR-006","Incorrect format of access token, access token needs to be suffixed by the term 'Bearer'.");
         }

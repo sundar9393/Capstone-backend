@@ -99,4 +99,12 @@ public class AddressEntity {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public StateEntity getState() {
+        return state;
+    }
+
+    public void setState(StateEntity state) {
+        this.state = state;
+    }
 }

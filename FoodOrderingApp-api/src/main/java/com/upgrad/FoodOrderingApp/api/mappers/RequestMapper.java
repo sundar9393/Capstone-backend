@@ -1,10 +1,16 @@
 package com.upgrad.FoodOrderingApp.api.mappers;
 
 import com.upgrad.FoodOrderingApp.api.Util.Utility;
+import com.upgrad.FoodOrderingApp.api.model.SaveAddressRequest;
 import com.upgrad.FoodOrderingApp.api.model.SignupCustomerRequest;
+import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
+import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
+import com.upgrad.FoodOrderingApp.service.exception.SaveAddressException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.UUID;
 
 public class RequestMapper {
 
@@ -41,6 +47,21 @@ public class RequestMapper {
         else {
             throw new SignUpRestrictedException("SGR-005","Except last name all fields should be filled");
         }
+    }
+
+    public static AddressEntity toAddressEntity(SaveAddressRequest saveAddressRequest, StateEntity stateEntity) throws SaveAddressException {
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setHouseNumber(saveAddressRequest.getFlatBuildingName());
+        addressEntity.setCity(saveAddressRequest.getCity());
+        addressEntity.setLocality(saveAddressRequest.getLocality());
+        addressEntity.setStatus(1);
+        if(!(saveAddressRequest.getPincode().matches("^[1-9][0-9]{5}$"))) {
+            throw new SaveAddressException("SAR-002","Invalid pincode");
+        }
+        addressEntity.setPincode(saveAddressRequest.getPincode());
+        addressEntity.setState(stateEntity);
+         return addressEntity;
+
     }
 
 }
