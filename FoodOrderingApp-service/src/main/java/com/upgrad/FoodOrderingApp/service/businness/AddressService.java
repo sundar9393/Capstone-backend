@@ -7,6 +7,7 @@ import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
+import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,35 @@ public class AddressService {
 
      public List<StateEntity> getAllStates() {
          return addressDao.getAllStates();
+     }
+
+     public AddressEntity getAddressWithUuid(String addrUuid) {
+        return addressDao.getAddressWithUuid(addrUuid);
+     }
+
+     @Transactional(propagation = Propagation.REQUIRED)
+     public AddressEntity deleteAddress(String accessToken, String addrUuid) throws AuthorizationFailedException, AddressNotFoundException {
+
+         CustomerAuthTokenEntity authTokenEntity = customerDao.getAuthTokenWithAccessToken(accessToken);
+         ServiceUtil.validateAuthToken(authTokenEntity);
+         
+         AddressEntity addressEntity = getAddressWithUuid(addrUuid);
+         if(addressEntity==null){
+             throw new AddressNotFoundException("ANF-003","No address by this id");
+         }
+         boolean isOwner = false;
+         List<CustomerEntity> customersList = addressEntity.getCustomers();
+         for(CustomerEntity customer: customersList) {
+             if(customer.getUuid().equals(authTokenEntity.getCustomer().getUuid())) {
+                isOwner = true;
+                break;
+             }
+         }
+         if(isOwner){
+             return addressDao.deleteAddress(addressEntity);
+         } else {
+             throw new AuthorizationFailedException("ATHR-004","You are not authorized to view/update/delete any one else's address");
+         }
      }
 
 }

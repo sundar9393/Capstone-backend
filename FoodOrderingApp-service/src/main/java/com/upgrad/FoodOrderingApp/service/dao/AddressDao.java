@@ -40,4 +40,18 @@ public class AddressDao {
         return entityManager.createNamedQuery("getAllStates", StateEntity.class).getResultList();
     }
 
+    public AddressEntity getAddressWithUuid(String addrUuid) {
+        try {
+            return entityManager.createNamedQuery("getAddressWithUuid", AddressEntity.class).setParameter("uuid",addrUuid).getSingleResult();
+        } catch(NoResultException nre) {
+            return null;
+        }
+
+    }
+
+    public AddressEntity deleteAddress(AddressEntity addressEntity) {
+        entityManager.remove(addressEntity);
+        return addressEntity;
+    }
+
 }

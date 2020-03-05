@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.Util.Utility;
 import com.upgrad.FoodOrderingApp.api.mappers.RequestMapper;
+import com.upgrad.FoodOrderingApp.api.model.DeleteAddressResponse;
 import com.upgrad.FoodOrderingApp.api.model.SaveAddressRequest;
 import com.upgrad.FoodOrderingApp.api.model.SaveAddressResponse;
 import com.upgrad.FoodOrderingApp.service.businness.AddressService;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class AddressController {
@@ -71,5 +73,18 @@ public class AddressController {
     public ResponseEntity<List<StateEntity>> getAllStates() {
         List<StateEntity> states = addressService.getAllStates();
         return new ResponseEntity<List<StateEntity>>(states,HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "/address/{address_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<DeleteAddressResponse> deleteAddress(@RequestHeader(name = "access-token") final String accessToken,
+                                                               @PathVariable(name = "address_id") final String addrUuid) throws AuthorizationFailedException, AddressNotFoundException {
+        String token = Utility.getAccessTokenFromHeader(accessToken);
+        if(StringUtils.isNotEmpty(addrUuid)) {
+           AddressEntity deletedAddress =  addressService.deleteAddress(token,addrUuid);
+           return new ResponseEntity<DeleteAddressResponse>(new DeleteAddressResponse().id(UUID.fromString(deletedAddress.getUuid()))
+           .status("ADDRESS DELETED SUCCESSFULLY"),HttpStatus.OK);
+        } else{
+            throw new AddressNotFoundException("ANF-005","Address id can not be empty");
+        }
     }
 }

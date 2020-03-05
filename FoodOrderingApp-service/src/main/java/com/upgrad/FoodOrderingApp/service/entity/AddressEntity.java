@@ -9,7 +9,8 @@ import java.util.List;
 @Table(name = "address")
 @NamedQueries(
         {
-                @NamedQuery(name = "getAllAddressOrdered", query = "SELECT a from AddressEntity a order by a.id desc ")
+                @NamedQuery(name = "getAllAddressOrdered", query = "SELECT a from AddressEntity a order by a.id desc "),
+                @NamedQuery(name = "getAddressWithUuid", query = "SELECT a from AddressEntity a where a.uuid = :uuid")
         }
 )
 public class AddressEntity {
