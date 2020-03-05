@@ -48,6 +48,9 @@ public class AddressEntity {
     @Column(name = "active")
     private Integer status;
 
+    @OneToMany(mappedBy = "address")
+    private List<RestaurantEntity> restaurants;
+
 
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -57,6 +60,7 @@ public class AddressEntity {
             inverseJoinColumns = {@JoinColumn(name = "customer_id")}
     )
     private List<CustomerEntity> customers = new ArrayList<>();
+
 
     public AddressEntity() {
 
@@ -132,5 +136,13 @@ public class AddressEntity {
 
     public void setCustomers(CustomerEntity customer) {
         this.customers.add(customer);
+    }
+
+    public List<RestaurantEntity> getRestaurants() {
+        return restaurants;
+    }
+
+    public void setRestaurants(List<RestaurantEntity> restaurants) {
+        this.restaurants = restaurants;
     }
 }
