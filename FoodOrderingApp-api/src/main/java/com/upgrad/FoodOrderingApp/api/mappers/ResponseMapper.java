@@ -147,4 +147,16 @@ public class ResponseMapper {
         return details;
     }
 
+    public static CategoriesListResponse toCategoriesList(List<CategoryEntity> categoryEntities) {
+        CategoriesListResponse categoriesListResponse = new CategoriesListResponse();
+
+        for (CategoryEntity categoryEntity : categoryEntities) {
+            categoriesListResponse.addCategoriesItem(new CategoryListResponse()
+                    .id(UUID.fromString(categoryEntity.getUuid()))
+                    .categoryName(categoryEntity.getCategory()));
+        }
+
+        return categoriesListResponse;
+    }
+
 }
