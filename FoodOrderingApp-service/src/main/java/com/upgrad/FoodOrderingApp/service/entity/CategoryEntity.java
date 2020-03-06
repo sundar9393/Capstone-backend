@@ -59,7 +59,7 @@ public class CategoryEntity {
         return restaurants;
     }
 
-    public void addRestaurants(RestaurantEntity restaurant) {
-        this.restaurants.add(restaurant);
+    public void setRestaurants(List<RestaurantEntity> restaurants) {
+        this.restaurants = restaurants;
     }
 }

@@ -2,12 +2,17 @@ package com.upgrad.FoodOrderingApp.service.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
+@NamedQueries(
+        {
+                @NamedQuery(name = "getAllRestaurants", query = "SELECT r from RestaurantEntity r")
+        }
+)
 public class RestaurantEntity {
 
     @Id
@@ -29,7 +34,7 @@ public class RestaurantEntity {
 
     @Column(name = "customer_rating")
     @NotNull
-    private Double rating;
+    private BigDecimal rating;
 
     @Column(name = "average_price_for_two")
     @NotNull
@@ -46,11 +51,11 @@ public class RestaurantEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "",
+            name = "restaurant_category",
             joinColumns = {@JoinColumn(name = "restaurant_id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id")}
     )
-    Set<CategoryEntity> categories = new HashSet<>();
+    List<CategoryEntity> categories = new ArrayList<>();
 
     public RestaurantEntity() {
 
@@ -88,11 +93,11 @@ public class RestaurantEntity {
         this.imageUrl = imageUrl;
     }
 
-    public Double getRating() {
+    public BigDecimal getRating() {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(BigDecimal rating) {
         this.rating = rating;
     }
 
@@ -120,11 +125,11 @@ public class RestaurantEntity {
         this.address = address;
     }
 
-    public Set<CategoryEntity> getCategories() {
+    public List<CategoryEntity> getCategories() {
         return categories;
     }
 
-    public void addategories(CategoryEntity category) {
-        this.categories.add(category);
+    public void setCategories(List<CategoryEntity> categories) {
+        this.categories = categories;
     }
 }

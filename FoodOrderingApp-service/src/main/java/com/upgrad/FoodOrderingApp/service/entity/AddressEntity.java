@@ -130,6 +130,7 @@ public class AddressEntity {
         this.state = state;
     }
 
+
     public List<CustomerEntity> getCustomers() {
         return customers;
     }
