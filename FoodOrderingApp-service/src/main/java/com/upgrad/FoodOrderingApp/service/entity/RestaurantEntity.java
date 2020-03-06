@@ -12,7 +12,8 @@ import java.util.List;
         {
                 @NamedQuery(name = "getAllRestaurants", query = "SELECT r from RestaurantEntity r"),
                 @NamedQuery(name = "getRestaurantByName", query = "SELECT r from RestaurantEntity r where lower(r.name) like :name"),
-                @NamedQuery(name="getRestaurantsByCategory", query = "SELECT r from RestaurantEntity r join r.categories category where category.category = :categoryName ")
+                @NamedQuery(name="getRestaurantsByCategory", query = "SELECT r from RestaurantEntity r join r.categories category where category.category = :categoryName "),
+                @NamedQuery(name = "getRestaurantByuuid", query = "select r from RestaurantEntity r where r.uuid = :uuid")
         }
 )
 public class RestaurantEntity {
@@ -58,6 +59,14 @@ public class RestaurantEntity {
             inverseJoinColumns = {@JoinColumn(name = "category_id")}
     )
     List<CategoryEntity> categories = new ArrayList<>();
+
+    @ManyToMany()
+    @JoinTable(
+            name = "restaurant_item",
+            joinColumns = {@JoinColumn(name = "restaurant_id")},
+            inverseJoinColumns = {@JoinColumn(name = "item_id")}
+    )
+    List<ItemEntity> items = new ArrayList<>();
 
     public RestaurantEntity() {
 
@@ -133,5 +142,13 @@ public class RestaurantEntity {
 
     public void setCategories(List<CategoryEntity> categories) {
         this.categories = categories;
+    }
+
+    public List<ItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemEntity> items) {
+        this.items = items;
     }
 }

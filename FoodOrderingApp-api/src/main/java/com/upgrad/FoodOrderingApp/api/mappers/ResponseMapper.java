@@ -1,10 +1,7 @@
 package com.upgrad.FoodOrderingApp.api.mappers;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
-import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
-import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
+import com.upgrad.FoodOrderingApp.service.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +88,63 @@ public class ResponseMapper {
 
         }
         return restaurantDetails;
+    }
+
+    public static RestaurantDetailsResponse toRestaurantDeatilsWithItems(RestaurantEntity restaurantEntity) {
+        RestaurantDetailsResponse details = new RestaurantDetailsResponse();
+
+        RestaurantDetailsResponseAddress address = new RestaurantDetailsResponseAddress();
+        RestaurantDetailsResponseAddressState state = new RestaurantDetailsResponseAddressState();
+        List<CategoryList> categories = new ArrayList<>();
+
+
+        details.setId(UUID.fromString(restaurantEntity.getUuid()));
+        details.setRestaurantName(restaurantEntity.getName());
+        details.setPhotoURL(restaurantEntity.getImageUrl());
+
+        address.setId(UUID.fromString(restaurantEntity.getAddress().getUuid()));
+        address.setFlatBuildingName(restaurantEntity.getAddress().getHouseNumber());
+        address.setLocality(restaurantEntity.getAddress().getLocality());
+        address.setCity(restaurantEntity.getAddress().getCity());
+        address.setPincode(restaurantEntity.getAddress().getPincode());
+
+        state.setId(UUID.fromString(restaurantEntity.getAddress().getState().getUuid()));
+        state.setStateName(restaurantEntity.getAddress().getState().getStateName());
+
+        address.setState(state);
+
+        details.setAddress(address);
+        details.setAveragePrice(restaurantEntity.getAvgPriceForTwo());
+        details.setCustomerRating(restaurantEntity.getRating());
+        details.setNumberCustomersRated(restaurantEntity.getCustomersRated());
+
+        for(CategoryEntity categoryEntity: restaurantEntity.getCategories()) {
+            CategoryList categoryList = new CategoryList();
+            List<ItemList> items = new ArrayList<>();
+
+            categoryList.setCategoryName(categoryEntity.getCategory());
+            categoryList.setId(UUID.fromString(categoryEntity.getUuid()));
+            for(ItemEntity item : categoryEntity.getItems()) {
+                ItemList itemList = new ItemList();
+                itemList.setId(UUID.fromString(item.getUuid()));
+                itemList.setItemName(item.getItemName());
+                if(item.getType().equals("1")) {
+                    itemList.setItemType(ItemList.ItemTypeEnum.NON_VEG);
+                } else {
+                    itemList.setItemType(ItemList.ItemTypeEnum.VEG);
+                }
+                itemList.setPrice(item.getPrice());
+
+                items.add(itemList);
+            }
+
+            categoryList.setItemList(items);
+
+            categories.add(categoryList);
+        }
+        details.setCategories(categories);
+
+        return details;
     }
 
 }
