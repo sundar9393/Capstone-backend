@@ -2,6 +2,8 @@ package com.upgrad.FoodOrderingApp.service.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -43,6 +45,13 @@ public class CustomerEntity {
     @Column(name = "salt")
     @NotNull
     private String salt;
+
+    //Setting mapping between Customer and Customer auth token
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    private List<CustomerAuthTokenEntity> authTokens;
+
+    @ManyToMany(mappedBy = "customers", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<AddressEntity> addresses = new ArrayList<>();
 
     public CustomerEntity() {
 
@@ -110,5 +119,21 @@ public class CustomerEntity {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public List<CustomerAuthTokenEntity> getAuthTokens() {
+        return authTokens;
+    }
+
+    public void setAuthTokens(List<CustomerAuthTokenEntity> authTokens) {
+        this.authTokens = authTokens;
+    }
+
+    public List<AddressEntity> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(AddressEntity address) {
+        this.addresses.add(address);
     }
 }
