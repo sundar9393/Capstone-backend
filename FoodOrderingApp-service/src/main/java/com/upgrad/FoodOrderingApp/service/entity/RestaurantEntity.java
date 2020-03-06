@@ -11,7 +11,8 @@ import java.util.List;
 @NamedQueries(
         {
                 @NamedQuery(name = "getAllRestaurants", query = "SELECT r from RestaurantEntity r"),
-                @NamedQuery(name = "getRestaurantByName", query = "SELECT r from RestaurantEntity r where lower(r.name) like :name")
+                @NamedQuery(name = "getRestaurantByName", query = "SELECT r from RestaurantEntity r where lower(r.name) like :name"),
+                @NamedQuery(name="getRestaurantsByCategory", query = "SELECT r from RestaurantEntity r join r.categories category where category.category = :categoryName ")
         }
 )
 public class RestaurantEntity {

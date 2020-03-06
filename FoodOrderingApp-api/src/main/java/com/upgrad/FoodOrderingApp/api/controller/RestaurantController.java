@@ -4,6 +4,7 @@ import com.upgrad.FoodOrderingApp.api.mappers.ResponseMapper;
 import com.upgrad.FoodOrderingApp.api.model.RestaurantDetailsResponse;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
+import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +49,15 @@ public class RestaurantController {
 
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/restaurant/category/{category_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<RestaurantDetailsResponse>> getRestaurantsByCategory(@PathVariable(name = "category_id") final String categoryUuid) throws CategoryNotFoundException {
+        if(StringUtils.isNotEmpty(categoryUuid)) {
+            List<RestaurantEntity> restaurantEntitiesByCategory = restaurantService.getRestaurantsByCategory(categoryUuid);
+            List<RestaurantDetailsResponse> restaurantDetailsResponsesByCategory = ResponseMapper.toRestaurantDetailsResponseList(restaurantEntitiesByCategory);
+
+            return new ResponseEntity<>(restaurantDetailsResponsesByCategory, HttpStatus.OK);
+        } else {
+            throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
+        }
+    }
 }
