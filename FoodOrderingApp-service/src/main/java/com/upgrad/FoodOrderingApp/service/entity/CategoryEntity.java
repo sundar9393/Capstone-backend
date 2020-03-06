@@ -8,6 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "category")
+@NamedQueries(
+        {
+                @NamedQuery(name = "getCategoryWithUuid", query = "select c from CategoryEntity c where c.uuid = :uuid")
+        }
+)
 public class CategoryEntity {
 
 
