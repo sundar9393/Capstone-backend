@@ -3,9 +3,7 @@ package com.upgrad.FoodOrderingApp.service.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "orders")
@@ -48,13 +46,13 @@ public class OrderEntity {
     @JoinColumn(name = "address_id")
     private AddressEntity address;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "order_item",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "item_id")}
-    )
-    private List<ItemEntity> items = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private RestaurantEntity restaurant;
+
+    @OneToMany(mappedBy = "order")
+    Set<OrderItem> orderItem = new HashSet<>();
+
 
     public OrderEntity() {
     }
@@ -131,12 +129,20 @@ public class OrderEntity {
         this.address = address;
     }
 
-    public List<ItemEntity> getItems() {
-        return items;
+    public Set<OrderItem> getOrderItem() {
+        return orderItem;
     }
 
-    public void setItems(List<ItemEntity> items) {
-        this.items = items;
+    public void setOrderItem(Set<OrderItem> orderItem) {
+        this.orderItem = orderItem;
+    }
+
+    public RestaurantEntity getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(RestaurantEntity restaurant) {
+        this.restaurant = restaurant;
     }
 }
 
