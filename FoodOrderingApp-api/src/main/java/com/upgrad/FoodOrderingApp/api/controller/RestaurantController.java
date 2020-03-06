@@ -1,22 +1,25 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
+import com.upgrad.FoodOrderingApp.api.Util.Utility;
 import com.upgrad.FoodOrderingApp.api.mappers.ResponseMapper;
 import com.upgrad.FoodOrderingApp.api.model.RestaurantDetailsResponse;
+import com.upgrad.FoodOrderingApp.api.model.RestaurantUpdatedResponse;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
+import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
+import com.upgrad.FoodOrderingApp.service.exception.InvalidRatingException;
 import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class RestaurantController {
@@ -71,5 +74,22 @@ public class RestaurantController {
         } else {
             throw new RestaurantNotFoundException("RNF-002","Restaurant id field should not be empty");
         }
+    }
+
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<RestaurantUpdatedResponse> rateRestaurant(@RequestHeader(name = "access-token") final String accessToken,
+                                                                    @PathVariable(name = "restaurant_id") final String restaurantId,
+                                                                    @RequestParam(name = "rating") final BigDecimal rating) throws AuthorizationFailedException, InvalidRatingException, RestaurantNotFoundException {
+
+       String authToken = Utility.getAccessTokenFromHeader(accessToken);
+       if(rating==null || rating.intValue() < 1 || rating.intValue() >5){
+           throw new InvalidRatingException("IRE-001","Rating should be in the range of 1 to 5");
+       }
+        RestaurantEntity restaurantEntity = restaurantService.rateRestaurant(authToken, restaurantId, rating);
+
+       return new ResponseEntity<>(new RestaurantUpdatedResponse().id(UUID.fromString(restaurantEntity.getUuid())).
+               status("RESTAURANT RATING UPDATED SUCCESSFULLY"), HttpStatus.OK);
+
     }
 }

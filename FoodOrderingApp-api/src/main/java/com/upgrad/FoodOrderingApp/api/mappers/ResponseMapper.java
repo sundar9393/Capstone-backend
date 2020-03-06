@@ -147,4 +147,24 @@ public class ResponseMapper {
         return details;
     }
 
+
+    public static List<ItemList> toItemList(List<ItemEntity> topfiveItems) {
+        List<ItemList> itemsList = new ArrayList<>();
+
+        for(ItemEntity itemEntity: topfiveItems) {
+            ItemList item = new ItemList();
+            item.setId(UUID.fromString(itemEntity.getUuid()));
+            item.setItemName(itemEntity.getItemName());
+            item.setPrice(itemEntity.getPrice());
+            if(itemEntity.getType().equals("1")){
+                item.setItemType(ItemList.ItemTypeEnum.NON_VEG);
+            } else {
+                item.setItemType(ItemList.ItemTypeEnum.VEG);
+            }
+            itemsList.add(item);
+        }
+
+        return itemsList;
+    }
+
 }

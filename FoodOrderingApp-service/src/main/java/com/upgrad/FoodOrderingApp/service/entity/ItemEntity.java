@@ -3,10 +3,13 @@ package com.upgrad.FoodOrderingApp.service.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "item")
+@NamedQuery(name = "getItemByUuid", query = "select i from ItemEntity i where i.uuid = :uuid")
 public class ItemEntity {
 
     @Id
@@ -30,7 +33,7 @@ public class ItemEntity {
     @NotNull
     private String type;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(
             name = "category_item",
             joinColumns = {@JoinColumn(name = "item_id")},
@@ -40,6 +43,9 @@ public class ItemEntity {
 
     @ManyToMany(mappedBy = "items")
     List<RestaurantEntity> restaurants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    Set<OrderItem> orderItem = new HashSet<>();
 
     public ItemEntity() {
 
@@ -99,5 +105,13 @@ public class ItemEntity {
 
     public void setRestaurants(List<RestaurantEntity> restaurants) {
         this.restaurants = restaurants;
+    }
+
+    public Set<OrderItem> getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(Set<OrderItem> orderItem) {
+        this.orderItem = orderItem;
     }
 }

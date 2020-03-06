@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
+import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import org.springframework.stereotype.Repository;
 
@@ -43,6 +44,18 @@ public class RestaurantDao {
         try {
             return entityManager.createNamedQuery("getRestaurantByuuid", RestaurantEntity.class).setParameter("uuid", restaurantId).getSingleResult();
 
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    public RestaurantEntity rateRestaurant(RestaurantEntity restaurantEntity) {
+        return entityManager.merge(restaurantEntity);
+    }
+
+    public ItemEntity getItemByUuid(String itemId) {
+        try {
+            return entityManager.createNamedQuery("getItemByUuid", ItemEntity.class).setParameter("uuid", itemId).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }

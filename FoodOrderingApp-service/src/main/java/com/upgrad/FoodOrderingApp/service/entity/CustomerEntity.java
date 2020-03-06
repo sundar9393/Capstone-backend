@@ -47,10 +47,10 @@ public class CustomerEntity {
     private String salt;
 
     //Setting mapping between Customer and Customer auth token
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "customer")
     private List<CustomerAuthTokenEntity> authTokens;
 
-    @ManyToMany(mappedBy = "customers", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "customers")
     private List<AddressEntity> addresses = new ArrayList<>();
 
     public CustomerEntity() {
