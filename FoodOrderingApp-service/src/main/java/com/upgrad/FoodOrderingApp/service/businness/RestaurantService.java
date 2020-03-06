@@ -16,4 +16,8 @@ public class RestaurantService {
     public List<RestaurantEntity> getAllRestaurants() {
         return restaurantDao.getAllRestaurants();
     }
+
+    public List<RestaurantEntity> getRestaurantsByName(String restaurantName) {
+        return  restaurantDao.getRestaurantByName(restaurantName.toLowerCase());
+    }
 }

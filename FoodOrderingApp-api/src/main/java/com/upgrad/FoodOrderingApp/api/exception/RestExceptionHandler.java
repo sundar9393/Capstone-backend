@@ -29,24 +29,29 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(AuthorizationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedExceptionHandler(AuthorizationFailedException athr, WebRequest request) {
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(athr.getCode()).message(athr.getErrorMessage())
+        return new ResponseEntity<>(new ErrorResponse().code(athr.getCode()).message(athr.getErrorMessage())
                 ,HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(UpdateCustomerException.class)
     public ResponseEntity<ErrorResponse> updateCustomerExceptionHandler(UpdateCustomerException uce, WebRequest request) {
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(uce.getCode()).message(uce.getErrorMessage())
+        return new ResponseEntity<>(new ErrorResponse().code(uce.getCode()).message(uce.getErrorMessage())
                 , HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(SaveAddressException.class)
     public ResponseEntity<ErrorResponse> saveAddressExceptionHandler(SaveAddressException sae, WebRequest request) {
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(sae.getCode()).message(sae.getErrorMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse().code(sae.getCode()).message(sae.getErrorMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AddressNotFoundException.class)
     public ResponseEntity<ErrorResponse> addressNotFoundExceptionHandler(AddressNotFoundException anfe, WebRequest request) {
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(anfe.getCode()).message(anfe.getErrorMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorResponse().code(anfe.getCode()).message(anfe.getErrorMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public ResponseEntity<ErrorResponse> restaurantNotFoundExceptionHandler(RestaurantNotFoundException rne, WebRequest request) {
+        return new ResponseEntity<>(new ErrorResponse().code(rne.getCode()).message(rne.getErrorMessage()), HttpStatus.NOT_FOUND);
     }
 
 

@@ -10,7 +10,8 @@ import java.util.List;
 @Table(name = "restaurant")
 @NamedQueries(
         {
-                @NamedQuery(name = "getAllRestaurants", query = "SELECT r from RestaurantEntity r")
+                @NamedQuery(name = "getAllRestaurants", query = "SELECT r from RestaurantEntity r"),
+                @NamedQuery(name = "getRestaurantByName", query = "SELECT r from RestaurantEntity r where lower(r.name) like :name")
         }
 )
 public class RestaurantEntity {
