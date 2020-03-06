@@ -60,4 +60,16 @@ public class RestaurantController {
             throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<RestaurantDetailsResponse> getRestaurantByUuid(@PathVariable("restaurant_id") final String restaurantId) throws RestaurantNotFoundException {
+        if(StringUtils.isNotEmpty(restaurantId)) {
+            RestaurantEntity restaurantByUuid = restaurantService.getRestaurantByuuid(restaurantId);
+            RestaurantDetailsResponse restaurantDetailsResponseWithItems = ResponseMapper.toRestaurantDeatilsWithItems(restaurantByUuid);
+
+            return new ResponseEntity<>(restaurantDetailsResponseWithItems, HttpStatus.OK);
+        } else {
+            throw new RestaurantNotFoundException("RNF-002","Restaurant id field should not be empty");
+        }
+    }
 }

@@ -32,6 +32,9 @@ public class CategoryEntity {
     @ManyToMany(mappedBy = "categories")
     private List<RestaurantEntity> restaurants = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "categories")
+    private List<ItemEntity> items = new ArrayList<>();
+
     public CategoryEntity() {
 
     }
@@ -66,5 +69,13 @@ public class CategoryEntity {
 
     public void setRestaurants(List<RestaurantEntity> restaurants) {
         this.restaurants = restaurants;
+    }
+
+    public List<ItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemEntity> items) {
+        this.items = items;
     }
 }

@@ -30,9 +30,18 @@ public class RestaurantDao {
         return restaurantEntityList;
     }
 
-    public CategoryEntity getCategoryByUuid(String uuid) {
+    public CategoryEntity getCategoryByUuid(String categoryId) {
         try {
-            return entityManager.createNamedQuery("getCategoryWithUuid", CategoryEntity.class).setParameter("uuid", uuid).getSingleResult();
+            return entityManager.createNamedQuery("getCategoryWithUuid", CategoryEntity.class).setParameter("uuid", categoryId).getSingleResult();
+
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    public RestaurantEntity getRestaurantByUuid(String restaurantId) {
+        try {
+            return entityManager.createNamedQuery("getRestaurantByuuid", RestaurantEntity.class).setParameter("uuid", restaurantId).getSingleResult();
 
         } catch (NoResultException nre) {
             return null;
