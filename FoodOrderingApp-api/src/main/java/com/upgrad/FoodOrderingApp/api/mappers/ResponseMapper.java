@@ -11,7 +11,7 @@ public class ResponseMapper {
 
     public static SignupCustomerResponse toSignupResponse(CustomerEntity customerEntity) {
         SignupCustomerResponse signupCustomerResponse = new SignupCustomerResponse().id(customerEntity.getUuid())
-                                                        .status("CUSTOMER SUCCESSFULLY REGISTERED");
+                .status("CUSTOMER SUCCESSFULLY REGISTERED");
         return signupCustomerResponse;
     }
 
@@ -39,16 +39,16 @@ public class ResponseMapper {
 
     public static UpdateCustomerResponse toUpdateCustomerResponse(CustomerEntity customerEntity) {
         return new UpdateCustomerResponse().id(customerEntity.getUuid())
-                                           .firstName(customerEntity.getFirstName())
-                                           .lastName(customerEntity.getLastName())
-                                           .status("CUSTOMER DETAILS UPDATED SUCCESSFULLY");
+                .firstName(customerEntity.getFirstName())
+                .lastName(customerEntity.getLastName())
+                .status("CUSTOMER DETAILS UPDATED SUCCESSFULLY");
     }
 
     public static List<RestaurantDetailsResponse> toRestaurantDetailsResponseList(List<RestaurantEntity> restaurantEntities) {
 
         List<RestaurantDetailsResponse> restaurantDetails = new ArrayList<>();
 
-        for(RestaurantEntity restaurantEntity: restaurantEntities) {
+        for (RestaurantEntity restaurantEntity : restaurantEntities) {
 
 
             RestaurantDetailsResponse details = new RestaurantDetailsResponse();
@@ -76,7 +76,7 @@ public class ResponseMapper {
             details.setCustomerRating(restaurantEntity.getRating());
             details.setNumberCustomersRated(restaurantEntity.getCustomersRated());
 
-            for(CategoryEntity categoryEntity: restaurantEntity.getCategories()) {
+            for (CategoryEntity categoryEntity : restaurantEntity.getCategories()) {
                 CategoryList categoryList = new CategoryList();
                 categoryList.setCategoryName(categoryEntity.getCategory());
                 categories.add(categoryList);
@@ -118,17 +118,17 @@ public class ResponseMapper {
         details.setCustomerRating(restaurantEntity.getRating());
         details.setNumberCustomersRated(restaurantEntity.getCustomersRated());
 
-        for(CategoryEntity categoryEntity: restaurantEntity.getCategories()) {
+        for (CategoryEntity categoryEntity : restaurantEntity.getCategories()) {
             CategoryList categoryList = new CategoryList();
             List<ItemList> items = new ArrayList<>();
 
             categoryList.setCategoryName(categoryEntity.getCategory());
             categoryList.setId(UUID.fromString(categoryEntity.getUuid()));
-            for(ItemEntity item : categoryEntity.getItems()) {
+            for (ItemEntity item : categoryEntity.getItems()) {
                 ItemList itemList = new ItemList();
                 itemList.setId(UUID.fromString(item.getUuid()));
                 itemList.setItemName(item.getItemName());
-                if(item.getType().equals("1")) {
+                if (item.getType().equals("1")) {
                     itemList.setItemType(ItemList.ItemTypeEnum.NON_VEG);
                 } else {
                     itemList.setItemType(ItemList.ItemTypeEnum.VEG);
