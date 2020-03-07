@@ -8,6 +8,7 @@ import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
+import com.upgrad.FoodOrderingApp.service.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +27,7 @@ public class CategoryController {
     public ResponseEntity<CategoriesListResponse> getAllCategories(@RequestHeader(name = "access-token") final String accessToken)
             throws AuthorizationFailedException {
         String token = Utility.getAccessTokenFromHeader(accessToken);
-        List<CategoryEntity> categories = categoryService.getAllCategories(token);
+        List<CategoryEntity> categories = categoryService.getAllCategoriesOrderedByName(token);
         CategoriesListResponse categoriesListResponse = ResponseMapper.toCategoriesList(categories);
 
         return new ResponseEntity<CategoriesListResponse>(categoriesListResponse, HttpStatus.OK);
@@ -36,7 +37,7 @@ public class CategoryController {
     public ResponseEntity<CategoryDetailsResponse> getCategoryById(@RequestHeader(name = "access-token") final String accessToken,
             @PathVariable(name = "category_id") final String categoryId) throws AuthorizationFailedException, CategoryNotFoundException {
         String token = Utility.getAccessTokenFromHeader(accessToken);
-        CategoryEntity categoryEntity = categoryService.getCategoryByUuid(token, categoryId);
+        CategoryEntity categoryEntity = categoryService.getCategoryById(token, categoryId);
         CategoryDetailsResponse categoryDetailsResponse = ResponseMapper.toCategoriesDetailsResponse(categoryEntity);
 
         return new ResponseEntity<CategoryDetailsResponse>(categoryDetailsResponse, HttpStatus.OK);

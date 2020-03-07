@@ -20,13 +20,13 @@ public class CategoryService {
     @Autowired
     CategoryDao categoryDao;
 
-    public List<CategoryEntity> getAllCategories(String accessToken) throws AuthorizationFailedException {
+    public List<CategoryEntity> getAllCategoriesOrderedByName(String accessToken) throws AuthorizationFailedException {
         ServiceUtil.validateAuthToken(customerDao.getAuthTokenWithAccessToken(accessToken));
 
-        return categoryDao.getAllCategories();
+        return categoryDao.getAllCategoriesOrderedByName();
     }
 
-    public CategoryEntity getCategoryByUuid(String accessToken, String uuid) throws AuthorizationFailedException,
+    public CategoryEntity getCategoryById(String accessToken, String uuid) throws AuthorizationFailedException,
             CategoryNotFoundException {
         ServiceUtil.validateAuthToken(customerDao.getAuthTokenWithAccessToken(accessToken));
 

@@ -53,21 +53,6 @@ public class CustomerService {
         return customerDao.signupCustomer(customerEntity);
     }
 
-    /*  Writing the verification method in Utility.class
-    public void verifyAuthorizationHeaderFormat(final String authorizationHeader)
-            throws AuthenticationFailedException {
-        // Contact Number must be minimum 3 character and maximum 30 characters
-        // Password must be minimum 3 characters and maximum 255 characters
-
-
-        if (!Pattern.matches("Basic \\d{3,30}:\\S{3,255}", authorizationHeader)) {
-            throw new AuthenticationFailedException("ATH-003", "Incorrect format of decoded customer name and password");
-
-        }
-
-    }
-*/
-
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerAuthTokenEntity login(final String contactNumber, final String password)
             throws AuthenticationFailedException {
