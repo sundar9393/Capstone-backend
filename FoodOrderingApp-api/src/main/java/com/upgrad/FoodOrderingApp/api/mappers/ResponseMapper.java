@@ -258,4 +258,23 @@ public class ResponseMapper {
         return allOrdersList;
     }
 
+    public static PaymentListResponse toPaymentListResponse(List<PaymentEntity> paymentEntities) {
+       PaymentListResponse paymentListResponse = new PaymentListResponse();
+
+       List<PaymentResponse> paymentResponses = new ArrayList<>();
+
+       for(PaymentEntity paymentEntity: paymentEntities) {
+           PaymentResponse paymentResponse = new PaymentResponse();
+
+           paymentResponse.setId(UUID.fromString(paymentEntity.getUuid()));
+           paymentResponse.setPaymentName(paymentEntity.getPaymentType());
+
+           paymentResponses.add(paymentResponse);
+       }
+
+       paymentListResponse.setPaymentMethods(paymentResponses);
+
+       return paymentListResponse;
+    }
+
 }

@@ -5,7 +5,14 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "payment")
-@NamedQuery(name = "getPaymentWithUuid", query = "select p from PaymentEntity p where p.uuid = :uuid")
+@NamedQueries(
+        {
+                @NamedQuery(name = "getPaymentWithUuid", query = "select p from PaymentEntity p where p.uuid = :uuid"),
+                @NamedQuery(name = "getAllPaymentMethods", query = "select p from PaymentEntity p")
+        }
+)
+
+
 public class PaymentEntity {
 
     @Id
