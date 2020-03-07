@@ -69,4 +69,15 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse().code(cnf.getCode()).message(cnf.getErrorMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ItemNotFoundException.class)
+    public ResponseEntity<ErrorResponse> itemNotFoundExceptionHandler(ItemNotFoundException inf, WebRequest request) {
+        return new ResponseEntity<>(new ErrorResponse().code(inf.getCode()).message(inf.getErrorMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PaymentMethodNotFoundException.class)
+    public ResponseEntity<ErrorResponse> paymentNotFoundExceptionHandler(PaymentMethodNotFoundException pnf, WebRequest request) {
+        return new ResponseEntity<>(new ErrorResponse().code(pnf.getCode()).message(pnf.getErrorMessage()), HttpStatus.NOT_FOUND);
+    }
+
+
 }

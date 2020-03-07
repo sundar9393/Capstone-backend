@@ -6,7 +6,13 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "coupon")
-@NamedQuery(name = "getCouponWithName", query = "select c from CouponEntity c where lower(c.couponCode) = :coupon")
+@NamedQueries(
+        {
+                @NamedQuery(name = "getCouponWithName", query = "select c from CouponEntity c where lower(c.couponCode) = :coupon"),
+                @NamedQuery(name = "getCouponWithUuid", query = "select c from CouponEntity c where c.uuid = :uuid")
+        }
+)
+
 public class CouponEntity {
 
     @Id
