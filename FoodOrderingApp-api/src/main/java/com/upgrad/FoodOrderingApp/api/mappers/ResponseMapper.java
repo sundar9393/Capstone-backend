@@ -175,4 +175,87 @@ public class ResponseMapper {
         return couponDetailsResponse;
     }
 
+    public static List<OrderList> toOrderList(List<OrderEntity> allOrders) {
+
+        List<OrderList> allOrdersList = new ArrayList<>();
+
+        for(OrderEntity orderEntity: allOrders) {
+
+            OrderList orderList = new OrderList();
+
+            orderList.setId(UUID.fromString(orderEntity.getUuid()));
+            orderList.setBill(orderEntity.getBillAmount());
+            orderList.setDate(orderEntity.getDate().toString());
+            orderList.setDiscount(orderEntity.getDiscount());
+
+            OrderListAddress orderListAddress= new OrderListAddress();
+            orderListAddress.setCity(orderEntity.getAddress().getCity());
+            orderListAddress.setFlatBuildingName(orderEntity.getAddress().getHouseNumber());
+            orderListAddress.setId(UUID.fromString(orderEntity.getAddress().getUuid()));
+            orderListAddress.setLocality(orderEntity.getAddress().getLocality());
+            orderListAddress.setPincode(orderEntity.getAddress().getPincode());
+
+            OrderListAddressState orderListAddressState = new OrderListAddressState();
+            orderListAddressState.setId(UUID.fromString(orderEntity.getAddress().getState().getUuid()));
+            orderListAddressState.setStateName(orderEntity.getAddress().getState().getStateName());
+
+            orderListAddress.setState(orderListAddressState);
+
+            orderList.setAddress(orderListAddress);
+
+            OrderListCoupon orderListCoupon = new OrderListCoupon();
+            orderListCoupon.setId(UUID.fromString(orderEntity.getCouponCode().getUuid()));
+            orderListCoupon.setCouponName(orderEntity.getCouponCode().getCouponCode());
+            orderListCoupon.setPercent(orderEntity.getCouponCode().getDiscountPercent());
+
+            orderList.setCoupon(orderListCoupon);
+
+            OrderListCustomer orderListCustomer = new OrderListCustomer();
+            orderListCustomer.setFirstName(orderEntity.getCustomer().getFirstName());
+            orderListCustomer.setLastName(orderEntity.getCustomer().getLastName());
+            orderListCustomer.setContactNumber(orderEntity.getCustomer().getContactNumber());
+            orderListCustomer.setEmailAddress(orderEntity.getCustomer().getEmail());
+            orderListCustomer.setId(UUID.fromString(orderEntity.getCustomer().getUuid()));
+
+            orderList.setCustomer(orderListCustomer);
+
+            OrderListPayment orderListPayment = new OrderListPayment();
+            orderListPayment.setId(UUID.fromString(orderEntity.getPayment().getUuid()));
+            orderListPayment.setPaymentName(orderEntity.getPayment().getPaymentType());
+
+            orderList.setPayment(orderListPayment);
+
+            List<ItemQuantityResponse> itemQuantityResponses = new ArrayList<>();
+
+            for(OrderItem orderItem :orderEntity.getOrderItem()) {
+                ItemQuantityResponse itemQuantityResponse = new ItemQuantityResponse();
+
+                ItemQuantityResponseItem itemQuantityResponseItem = new ItemQuantityResponseItem();
+                itemQuantityResponseItem.setId(UUID.fromString(orderItem.getItem().getUuid()));
+                itemQuantityResponseItem.setItemName(orderItem.getItem().getItemName());
+                itemQuantityResponseItem.setItemPrice(orderItem.getItem().getPrice());
+                if(orderItem.getItem().getType().equals("1")) {
+                    itemQuantityResponseItem.setType(ItemQuantityResponseItem.TypeEnum.NON_VEG);
+                } else {
+                    itemQuantityResponseItem.setType(ItemQuantityResponseItem.TypeEnum.VEG);
+                }
+
+
+                itemQuantityResponse.setItem(itemQuantityResponseItem);
+
+                itemQuantityResponse.setPrice(orderItem.getPrice());
+                itemQuantityResponse.setQuantity(orderItem.getQuantity());
+
+                itemQuantityResponses.add(itemQuantityResponse);
+
+            }
+
+            orderList.setItemQuantities(itemQuantityResponses);
+
+            allOrdersList.add(orderList);
+        }
+
+        return allOrdersList;
+    }
+
 }
