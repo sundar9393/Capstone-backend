@@ -22,9 +22,9 @@ public class OrderEntity {
     @NotNull
     private BigDecimal billAmount;
 
-    @Column(name = "coupon_id")
-    @NotNull
-    private Integer couponCode;
+    @ManyToOne
+    @JoinColumn(name = "coupon_id")
+    private CouponEntity coupon;
 
     @Column(name = "discount")
     @NotNull
@@ -49,6 +49,8 @@ public class OrderEntity {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private RestaurantEntity restaurant;
+
+
 
     @OneToMany(mappedBy = "order")
     Set<OrderItem> orderItem = new HashSet<>();
@@ -81,12 +83,12 @@ public class OrderEntity {
         this.billAmount = billAmount;
     }
 
-    public Integer getCouponCode() {
-        return couponCode;
+    public CouponEntity getCouponCode() {
+        return coupon;
     }
 
-    public void setCouponCode(Integer couponCode) {
-        this.couponCode = couponCode;
+    public void setCouponCode(CouponEntity coupon) {
+        this.coupon = coupon;
     }
 
     public BigDecimal getDiscount() {
