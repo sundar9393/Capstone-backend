@@ -159,4 +159,21 @@ public class ResponseMapper {
         return categoriesListResponse;
     }
 
+    public static CategoryDetailsResponse toCategoriesDetailsResponse(CategoryEntity categoryEntity) {
+        CategoryDetailsResponse categoryDetailsResponse = new CategoryDetailsResponse()
+                .id(UUID.fromString(categoryEntity.getUuid()))
+                .categoryName(categoryEntity.getCategory());
+
+        for (ItemEntity itemEntity : categoryEntity.getItems()) {
+            categoryDetailsResponse.addItemListItem(
+                    new ItemList()
+                            .id(UUID.fromString(itemEntity.getUuid()))
+                            .itemName(itemEntity.getItemName())
+                            .price(itemEntity.getPrice())
+                            .itemType(ItemList.ItemTypeEnum.valueOf(itemEntity.getType())));
+        }
+
+        return categoryDetailsResponse;
+    }
+
 }
