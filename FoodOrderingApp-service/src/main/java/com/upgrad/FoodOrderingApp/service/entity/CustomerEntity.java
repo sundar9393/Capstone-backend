@@ -53,6 +53,9 @@ public class CustomerEntity {
     @ManyToMany(mappedBy = "customers")
     private List<AddressEntity> addresses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "customer")
+    private List<OrderEntity> orders;
+
     public CustomerEntity() {
 
     }
@@ -135,5 +138,17 @@ public class CustomerEntity {
 
     public void setAddresses(AddressEntity address) {
         this.addresses.add(address);
+    }
+
+    public void setAddresses(List<AddressEntity> addresses) {
+        this.addresses = addresses;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
 }
