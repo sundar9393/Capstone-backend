@@ -167,4 +167,12 @@ public class ResponseMapper {
         return itemsList;
     }
 
+    public static CouponDetailsResponse toCouponDetailsResponse(CouponEntity couponEntity) {
+        CouponDetailsResponse couponDetailsResponse = new CouponDetailsResponse()
+                .id(UUID.fromString(couponEntity.getUuid()))
+                .couponName(couponEntity.getCouponCode())
+                .percent(couponEntity.getDiscountPercent());
+        return couponDetailsResponse;
+    }
+
 }

@@ -64,4 +64,9 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse().code(ire.getCode()).message(ire.getErrorMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CouponNotFoundException.class)
+    public ResponseEntity<ErrorResponse> couponNotFoundExceptionHandler(CouponNotFoundException cnf, WebRequest request) {
+        return new ResponseEntity<>(new ErrorResponse().code(cnf.getCode()).message(cnf.getErrorMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }
