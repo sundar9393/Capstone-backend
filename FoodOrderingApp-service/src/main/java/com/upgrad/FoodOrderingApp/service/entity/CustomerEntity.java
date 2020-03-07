@@ -47,11 +47,14 @@ public class CustomerEntity {
     private String salt;
 
     //Setting mapping between Customer and Customer auth token
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "customer")
     private List<CustomerAuthTokenEntity> authTokens;
 
-    @ManyToMany(mappedBy = "customers", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "customers")
     private List<AddressEntity> addresses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer")
+    private List<OrderEntity> orders;
 
     public CustomerEntity() {
 
@@ -135,5 +138,17 @@ public class CustomerEntity {
 
     public void setAddresses(AddressEntity address) {
         this.addresses.add(address);
+    }
+
+    public void setAddresses(List<AddressEntity> addresses) {
+        this.addresses = addresses;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
 }

@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
@@ -52,7 +54,7 @@ public class RestaurantEntity {
     @NotNull
     AddressEntity address;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(
             name = "restaurant_category",
             joinColumns = {@JoinColumn(name = "restaurant_id")},
@@ -67,6 +69,9 @@ public class RestaurantEntity {
             inverseJoinColumns = {@JoinColumn(name = "item_id")}
     )
     List<ItemEntity> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant")
+    Set<OrderEntity> orders = new HashSet<>();
 
     public RestaurantEntity() {
 
@@ -150,5 +155,13 @@ public class RestaurantEntity {
 
     public void setItems(List<ItemEntity> items) {
         this.items = items;
+    }
+
+    public Set<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<OrderEntity> orders) {
+        this.orders = orders;
     }
 }
