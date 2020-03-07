@@ -5,6 +5,7 @@ import com.upgrad.FoodOrderingApp.service.dao.RestaurantDao;
 import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
+import com.upgrad.FoodOrderingApp.service.exception.ItemNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import com.upgrad.FoodOrderingApp.service.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +118,16 @@ public class RestaurantService {
     return topFive;
 
     }
+
+    public ItemEntity getItemByUuid(String itemId) throws ItemNotFoundException {
+        ItemEntity itemEntity = restaurantDao.getItemByUuid(itemId);
+        if(itemEntity == null) {
+            throw new ItemNotFoundException("INF-003","No item by this id exist");
+        } else {
+            return itemEntity;
+        }
+    }
+
 
     private List<Map.Entry<String,Integer>> sortMapInDescendingOrder(Map<String , Integer> map) {
 

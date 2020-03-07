@@ -2,19 +2,17 @@ package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.CustomerDao;
 import com.upgrad.FoodOrderingApp.service.dao.OrderDao;
-import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
-import com.upgrad.FoodOrderingApp.service.entity.OrderEntity;
+import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CouponNotFoundException;
 import com.upgrad.FoodOrderingApp.service.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -61,4 +59,47 @@ public class OrderService {
 
         return ordersListed;
     }
+
+    //get coupon by uuid
+
+    public CouponEntity getCouponByUuid(String uuid) throws CouponNotFoundException {
+        CouponEntity couponEntity = orderDao.getCouponByUuid(uuid);
+        if(couponEntity == null) {
+            throw new CouponNotFoundException("CPF-002","No coupon by this id");
+        } else {
+            return couponEntity;
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public OrderEntity saveOrder(String accessToken, OrderEntity orderEntity) throws AuthorizationFailedException {
+        CustomerAuthTokenEntity authTokenEntity = customerDao.getAuthTokenWithAccessToken(accessToken);
+        ServiceUtil.validateAuthToken(authTokenEntity);
+
+        //Check whether the the address belongs to logged in person
+        AddressEntity orderAddress = orderEntity.getAddress();
+
+        boolean isOwner = false;
+        List<CustomerEntity> customersList = orderAddress.getCustomers();
+        for(CustomerEntity customer: customersList) {
+            if(customer.getUuid().equals(authTokenEntity.getCustomer().getUuid())) {
+                isOwner = true;
+                break;
+            }
+        }
+        if(isOwner){
+            orderEntity.setCustomer(authTokenEntity.getCustomer());
+            orderEntity.setUuid(UUID.randomUUID().toString());
+            orderEntity.setDate(new Date());
+
+            return orderDao.saveOrder(orderEntity);
+
+
+        } else {
+            throw new AuthorizationFailedException("ATHR-004","You are not authorized to view/update/delete any one else's address");
+        }
+
+    }
+
+
 }
