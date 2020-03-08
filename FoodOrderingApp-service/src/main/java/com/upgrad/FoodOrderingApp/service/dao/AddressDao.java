@@ -54,4 +54,8 @@ public class AddressDao {
         return addressEntity;
     }
 
+    public AddressEntity updateAddress(AddressEntity addressEntity) {
+        return entityManager.merge(addressEntity);
+    }
+
 }
