@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.api.controller;
 import com.upgrad.FoodOrderingApp.api.Util.Utility;
 import com.upgrad.FoodOrderingApp.api.mappers.ResponseMapper;
 import com.upgrad.FoodOrderingApp.api.model.RestaurantDetailsResponse;
+import com.upgrad.FoodOrderingApp.api.model.RestaurantListResponse;
 import com.upgrad.FoodOrderingApp.api.model.RestaurantUpdatedResponse;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
@@ -28,23 +29,23 @@ public class RestaurantController {
     RestaurantService restaurantService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<RestaurantDetailsResponse>> getAllRestaurants() {
+    public ResponseEntity<RestaurantListResponse> getAllRestaurants() {
 
         List<RestaurantEntity> restaurants = restaurantService.getAllRestaurants();
-        List<RestaurantDetailsResponse> restaurantDetailsResponse = ResponseMapper.toRestaurantDetailsResponseList(restaurants);
+        RestaurantListResponse restaurantListResponse = ResponseMapper.toRestaurantList(restaurants);
 
 
-        return new ResponseEntity<>(restaurantDetailsResponse, HttpStatus.OK);
+        return new ResponseEntity<>(restaurantListResponse, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant/name/{restaurant_name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<RestaurantDetailsResponse>> getRestaurantByName(@PathVariable(name = "restaurant_name") final String restaurantName) throws RestaurantNotFoundException {
+    public ResponseEntity<RestaurantListResponse> getRestaurantByName(@PathVariable(name = "restaurant_name") final String restaurantName) throws RestaurantNotFoundException {
 
         if(StringUtils.isNotEmpty(restaurantName)) {
             List<RestaurantEntity> restaurantsByName = restaurantService.getRestaurantsByName(restaurantName);
-            List<RestaurantDetailsResponse> restaurantDetailsResponsesByName = ResponseMapper.toRestaurantDetailsResponseList(restaurantsByName);
+            RestaurantListResponse restaurantListResponseByName = ResponseMapper.toRestaurantList(restaurantsByName);
 
-            return new ResponseEntity<>(restaurantDetailsResponsesByName, HttpStatus.OK);
+            return new ResponseEntity<>(restaurantListResponseByName, HttpStatus.OK);
 
         } else {
             throw new RestaurantNotFoundException("RNF-003","Restaurant name field should not be empty");
@@ -53,12 +54,12 @@ public class RestaurantController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant/category/{category_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<RestaurantDetailsResponse>> getRestaurantsByCategory(@PathVariable(name = "category_id") final String categoryUuid) throws CategoryNotFoundException {
+    public ResponseEntity<RestaurantListResponse> getRestaurantsByCategory(@PathVariable(name = "category_id") final String categoryUuid) throws CategoryNotFoundException {
         if(StringUtils.isNotEmpty(categoryUuid)) {
             List<RestaurantEntity> restaurantEntitiesByCategory = restaurantService.getRestaurantsByCategory(categoryUuid);
-            List<RestaurantDetailsResponse> restaurantDetailsResponsesByCategory = ResponseMapper.toRestaurantDetailsResponseList(restaurantEntitiesByCategory);
+            RestaurantListResponse restaurantListResponseByCategory = ResponseMapper.toRestaurantList(restaurantEntitiesByCategory);
 
-            return new ResponseEntity<>(restaurantDetailsResponsesByCategory, HttpStatus.OK);
+            return new ResponseEntity<>(restaurantListResponseByCategory, HttpStatus.OK);
         } else {
             throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
         }
