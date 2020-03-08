@@ -52,6 +52,9 @@ public class AddressEntity {
     @OneToMany(mappedBy = "address")
     private List<RestaurantEntity> restaurants;
 
+    @OneToMany(mappedBy = "address")
+    private List<OrderEntity> orders;
+
 
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -136,8 +139,12 @@ public class AddressEntity {
         return customers;
     }
 
-    public void setCustomers(CustomerEntity customer) {
-        this.customers.add(customer);
+    public void setCustomers(List<CustomerEntity> customers) {
+        this.customers = customers;
+    }
+
+    public void addCustomers(CustomerEntity customerEntity) {
+        this.customers.add(customerEntity);
     }
 
     public List<RestaurantEntity> getRestaurants() {
@@ -147,4 +154,13 @@ public class AddressEntity {
     public void setRestaurants(List<RestaurantEntity> restaurants) {
         this.restaurants = restaurants;
     }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
+    }
+
 }

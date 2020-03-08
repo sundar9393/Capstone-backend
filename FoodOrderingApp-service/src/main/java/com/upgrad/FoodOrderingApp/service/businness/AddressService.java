@@ -3,10 +3,7 @@ package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.AddressDao;
 import com.upgrad.FoodOrderingApp.service.dao.CustomerDao;
-import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
-import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
+import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.util.ServiceUtil;
@@ -16,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +37,7 @@ public class AddressService {
          ServiceUtil.validateAuthToken(authTokenEntity);
 
          addressEntity.setUuid(UUID.randomUUID().toString());
-         addressEntity.setCustomers(authTokenEntity.getCustomer());
+         addressEntity.addCustomers(authTokenEntity.getCustomer());
          
          return addressDao.saveAddress(addressEntity);
      }
@@ -79,7 +77,17 @@ public class AddressService {
              }
          }
          if(isOwner){
-             return addressDao.deleteAddress(addressEntity);
+             List<OrderEntity> pastOrders = addressEntity.getOrders();
+
+             //Checking whether the address has any past orders
+
+             if(pastOrders.isEmpty() || pastOrders == null) {
+                 return addressDao.deleteAddress(addressEntity);
+             } else {
+                 addressEntity.setStatus(0);
+                 return addressDao.updateAddress(addressEntity);
+             }
+
          } else {
              throw new AuthorizationFailedException("ATHR-004","You are not authorized to view/update/delete any one else's address");
          }
