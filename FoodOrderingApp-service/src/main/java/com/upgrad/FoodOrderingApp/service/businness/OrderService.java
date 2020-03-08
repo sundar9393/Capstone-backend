@@ -73,6 +73,7 @@ public class OrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public OrderEntity saveOrder(String accessToken, OrderEntity orderEntity) throws AuthorizationFailedException {
+
         CustomerAuthTokenEntity authTokenEntity = customerDao.getAuthTokenWithAccessToken(accessToken);
         ServiceUtil.validateAuthToken(authTokenEntity);
 
