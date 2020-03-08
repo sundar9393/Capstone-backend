@@ -38,7 +38,4 @@ public class OrderDao {
         return orderEntity;
     }
 
-    public List<PaymentEntity> getAllPaymentMethods() {
-        return entityManager.createNamedQuery("getAllPaymentMethods", PaymentEntity.class).getResultList();
-    }
 }

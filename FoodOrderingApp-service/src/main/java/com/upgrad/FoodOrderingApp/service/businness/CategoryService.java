@@ -16,14 +16,13 @@ public class CategoryService {
     @Autowired
     CategoryDao categoryDao;
 
-    public List<CategoryEntity> getAllCategoriesOrderedByName() throws AuthorizationFailedException {
+    public List<CategoryEntity> getAllCategoriesOrderedByName() {
 
         return categoryDao.getAllCategoriesOrderedByName();
 
     }
 
-    public CategoryEntity getCategoryById(String uuid) throws AuthorizationFailedException,
-            CategoryNotFoundException {
+    public CategoryEntity getCategoryById(String uuid) throws CategoryNotFoundException {
 
         if (uuid.isEmpty()) {
             throw new CategoryNotFoundException("CNF-001", "Category id field should not be empty");

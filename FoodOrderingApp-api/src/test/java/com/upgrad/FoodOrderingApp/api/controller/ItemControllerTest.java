@@ -1,9 +1,7 @@
-/*
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.upgrad.FoodOrderingApp.api.model.ItemListResponse;
-import com.upgrad.FoodOrderingApp.service.businness.ItemService;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
@@ -21,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 import java.util.UUID;
 
-import static com.upgrad.FoodOrderingApp.service.common.ItemType.NON_VEG;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,23 +34,20 @@ public class ItemControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ItemService mockItemService;
-
-    @MockBean
     private RestaurantService mockRestaurantService;
 
     //This test case passes when you are able to fetch top 5 items based on the number of times they were ordered.
     @Test
     public void shouldGetItemsByPopularity() throws Exception {
         final RestaurantEntity restaurantEntity = new RestaurantEntity();
-        when(mockRestaurantService.restaurantByUUID("some_restaurant_id"))
+        when(mockRestaurantService.getRestaurantByuuid("some_restaurant_id"))
                 .thenReturn(restaurantEntity);
 
         final ItemEntity itemEntity = new ItemEntity();
         final String itemId = UUID.randomUUID().toString();
         itemEntity.setUuid(itemId);
-        itemEntity.setType(NON_VEG);
-        when(mockItemService.getItemsByPopularity(restaurantEntity))
+        itemEntity.setType("1");
+        when(mockRestaurantService.getTopfiveItems("some_restaurant_id"))
                 .thenReturn(Collections.singletonList(itemEntity));
 
         final String responseString = mockMvc
@@ -71,7 +66,7 @@ public class ItemControllerTest {
     // but the restaurant id you gave does not exist.
     @Test
     public void shouldNotGetItemsByPopularityIfRestaurantDoesNOtExistForGivenId() throws Exception {
-        when(mockRestaurantService.restaurantByUUID("some_restaurant_id"))
+        when(mockRestaurantService.getTopfiveItems("some_restaurant_id"))
                 .thenThrow(new RestaurantNotFoundException("RNF-001", "No restaurant by this id"));
 
         mockMvc
@@ -80,4 +75,4 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("code").value("RNF-001"));
     }
 
-}*/
+}
