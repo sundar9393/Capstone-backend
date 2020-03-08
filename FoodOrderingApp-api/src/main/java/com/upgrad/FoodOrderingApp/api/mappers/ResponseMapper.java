@@ -277,4 +277,44 @@ public class ResponseMapper {
        return paymentListResponse;
     }
 
+    public static CategoriesListResponse toCategoriesList(List<CategoryEntity> categoryEntities) {
+        CategoriesListResponse categoriesListResponse = new CategoriesListResponse();
+
+        for (CategoryEntity categoryEntity : categoryEntities) {
+            categoriesListResponse.addCategoriesItem(new CategoryListResponse()
+                    .id(UUID.fromString(categoryEntity.getUuid()))
+                    .categoryName(categoryEntity.getCategory()));
+        }
+
+        return categoriesListResponse;
+    }
+
+
+    public static CategoryDetailsResponse toCategoriesDetailsResponse(CategoryEntity categoryEntity) {
+
+        CategoryDetailsResponse categoryDetailsResponse = new CategoryDetailsResponse()
+                .id(UUID.fromString(categoryEntity.getUuid()))
+                .categoryName(categoryEntity.getCategory());
+
+        for (ItemEntity itemEntity : categoryEntity.getItems()) {
+
+            
+            ItemList itemList = new ItemList()
+                    .id(UUID.fromString(itemEntity.getUuid()))
+                    .itemName(itemEntity.getItemName())
+                    .price(itemEntity.getPrice());
+
+            if(itemEntity.getType().equals("1")){
+                itemList.setItemType(ItemList.ItemTypeEnum.NON_VEG);
+            } else {
+                itemList.setItemType(ItemList.ItemTypeEnum.VEG);
+            }
+
+
+            categoryDetailsResponse.addItemListItem(itemList);
+        }
+
+        return categoryDetailsResponse;
+    }
+
 }
