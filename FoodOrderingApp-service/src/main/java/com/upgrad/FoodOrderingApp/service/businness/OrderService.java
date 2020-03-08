@@ -103,7 +103,4 @@ public class OrderService {
 
 
 
-    public List<PaymentEntity> getAllPaymentMethods() {
-        return orderDao.getAllPaymentMethods();
-    }
 }

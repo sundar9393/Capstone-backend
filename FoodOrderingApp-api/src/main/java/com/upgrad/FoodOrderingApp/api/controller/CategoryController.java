@@ -24,8 +24,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CategoriesListResponse> getAllCategories()
-            throws AuthorizationFailedException {
+    public ResponseEntity<CategoriesListResponse> getAllCategories() {
 
         List<CategoryEntity> categories = categoryService.getAllCategoriesOrderedByName();
         CategoriesListResponse categoriesListResponse = ResponseMapper.toCategoriesList(categories);
@@ -35,7 +34,7 @@ public class CategoryController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/category/{category_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CategoryDetailsResponse> getCategoryById(@PathVariable(name = "category_id") final String categoryId)
-            throws AuthorizationFailedException, CategoryNotFoundException {
+            throws CategoryNotFoundException {
 
         CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
         CategoryDetailsResponse categoryDetailsResponse = ResponseMapper.toCategoriesDetailsResponse(categoryEntity);
