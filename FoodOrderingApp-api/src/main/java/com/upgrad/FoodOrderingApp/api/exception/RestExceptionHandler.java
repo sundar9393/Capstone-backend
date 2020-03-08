@@ -66,7 +66,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(CouponNotFoundException.class)
     public ResponseEntity<ErrorResponse> couponNotFoundExceptionHandler(CouponNotFoundException cnf, WebRequest request) {
-        return new ResponseEntity<>(new ErrorResponse().code(cnf.getCode()).message(cnf.getErrorMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse().code(cnf.getCode()).message(cnf.getErrorMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ItemNotFoundException.class)
