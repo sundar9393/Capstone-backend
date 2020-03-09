@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0.229" tests="19" errors="0" skipped="19" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0.238" tests="24" errors="0" skipped="24" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -60,68 +60,83 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="shouldNotGetCouponByNameIfCouponNameFieldIsEmpty" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldUpdateCustomerPassword" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
-    <system-out><![CDATA[2020-03-09 07:27:38.209  INFO 8216 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest], using SpringBootContextLoader
-2020-03-09 07:27:38.210  INFO 8216 --- [           main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
-2020-03-09 07:27:38.210  INFO 8216 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest]: OrderControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2020-03-09 07:27:38.217  INFO 8216 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.upgrad.FoodOrderingApp.api.FoodOrderingAppApiApplication for test class com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest
-2020-03-09 07:27:38.221  INFO 8216 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
-2020-03-09 07:27:38.222  INFO 8216 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@3f2a7ca0, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@23e297d9, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@5e8e02a3, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@a74c940, org.springframework.test.context.support.DirtiesContextTestExecutionListener@66576bd2, org.springframework.test.context.transaction.TransactionalTestExecutionListener@51bc649e, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@7f09ff10, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@531b1778, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@ecfff32, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@3c65f2e1, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@c247b02, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@78f1d29]
+    <system-out><![CDATA[2020-03-09 07:27:33.714  INFO 8216 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest], using SpringBootContextLoader
+2020-03-09 07:27:33.715  INFO 8216 --- [           main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2020-03-09 07:27:33.716  INFO 8216 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest]: CustomerControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2020-03-09 07:27:33.721  INFO 8216 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.upgrad.FoodOrderingApp.api.FoodOrderingAppApiApplication for test class com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest
+2020-03-09 07:27:33.724  INFO 8216 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+2020-03-09 07:27:33.724  INFO 8216 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@5a58db42, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@217fd3c, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@69ac5752, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@1736273c, org.springframework.test.context.support.DirtiesContextTestExecutionListener@ba86c53, org.springframework.test.context.transaction.TransactionalTestExecutionListener@36eb8e07, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@3df6494f, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@1b5f960a, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@53ddabc6, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@39ac8c0c, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@361f1647, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@51172948]
 ]]></system-out>
   </testcase>
-  <testcase name="shouldNotSaveOrderIfCustomerSessionIsExpired" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotUpdateCustomerPasswordWhenCustomerIsNotLoggedIn" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotGetCouponByNameIfCustomerSessionIsExpired" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotUpdateCustomerPasswordIfNewPasswordIsEmpty" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotSaveOrderIfRestaurantDoesNotExists" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotLogoutIfSessionIsExpired" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotGetPlacedOrderDetailsIfCustomerIsLoggedOut" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotLoginForInvalidAuthorizationFormat" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldSaveOrder" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotUpdateCustomerDetailsIfFirstNameNotPresentInTheRequest" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotGetPlacedOrderDetailsIfCustomerSessionIsExpired" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotUpdateCustomerDetailsWhenCustomerIsNotLoggedIn" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotGetCouponByNameIfCustomerIsLoggedOut" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldUpdateCustomerDetailsIfCustomerIsAlreadyLoggedOut" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotGetPlacedOrderDetailsIfCustomerIsNotLoggedIn" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotSignUpForEmptyRequest" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotGetCouponByNameIfItDoesNotExists" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotUpdateCustomerPasswordIfOldPasswordIsEmpty" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotGetCouponByNameIfCustomerIsNotLoggedIn" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldUpdateCustomerDetailsIfSessionIsExpired" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotSaveOrderIfCustomerIsLoggedOut" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotLogoutIfCustomerIsAlreadyLoggedOut" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotSaveOrderIfCustomerIsNotLoggedIn" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldLogoutForValidRequest" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotSaveOrderIfAddressNotFound" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotLoginIfNoDataPresentForGivenMobileNo" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldGetCouponByName" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotSignUpForInvalidContactNo" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotSaveOrderIfUserUnauthorizedToChangeAddress" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotLogoutWhenCustomerIsNotLoggedIn" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotSaveOrderIfCouponNotFound" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldUpdateCustomerDetails" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldGetPlacedOrderDetails" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldNotSignUpForInvalidEmailId" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
-  <testcase name="shouldNotSaveOrderIfPaymentMethodDoesNotExists" classname="com.upgrad.FoodOrderingApp.api.controller.OrderControllerTest" time="0">
+  <testcase name="shouldLoginForValidRequest" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
+    <skipped/>
+  </testcase>
+  <testcase name="shouldNotSignUpIfTheContactIsAlreadySignedUp" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
+    <skipped/>
+  </testcase>
+  <testcase name="shouldNotUpdateCustomerPasswordIfNewPasswordDoesNotFollowRecommendedPasswordFormat" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
+    <skipped/>
+  </testcase>
+  <testcase name="shouldNotSignUpForInvalidPassword" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
+    <skipped/>
+  </testcase>
+  <testcase name="shouldNotLoginForWrongPassword" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
+    <skipped/>
+  </testcase>
+  <testcase name="shouldSignUpForValidRequest" classname="com.upgrad.FoodOrderingApp.api.controller.CustomerControllerTest" time="0">
     <skipped/>
   </testcase>
 </testsuite>
