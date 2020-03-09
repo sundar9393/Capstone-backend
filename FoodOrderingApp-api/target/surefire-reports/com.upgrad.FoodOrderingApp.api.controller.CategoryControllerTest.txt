@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.upgrad.FoodOrderingApp.api.controller.CategoryControllerTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.312 s - in com.upgrad.FoodOrderingApp.api.controller.CategoryControllerTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 16.205 s - in com.upgrad.FoodOrderingApp.api.controller.CategoryControllerTest
