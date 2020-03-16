@@ -38,10 +38,14 @@ public class CustomerService {
 
     }
 
+    public CustomerEntity getCustomerWithPhoneNum(String contactNum) {
+        return customerDao.getCustomerByPhone(contactNum);
+    }
+
 
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity signupCustomer(CustomerEntity customerEntity) throws SignUpRestrictedException, AuthenticationFailedException {
-        CustomerEntity existingCustomer = getCustomerWithPhoneNumber(customerEntity.getContactNumber());
+        CustomerEntity existingCustomer = getCustomerWithPhoneNum(customerEntity.getContactNumber());
         if(existingCustomer!=null){
             throw new SignUpRestrictedException("SGR-001","This contact number is already registered! Try other contact number.");
         }
