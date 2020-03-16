@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZonedDateTime;
 import java.util.Base64;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "/customer")
 public class CustomerController {
